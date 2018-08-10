@@ -2,6 +2,7 @@ from picamera import PiCamera
 from datetime import datetime
 from time import sleep
 from threading import Thread
+import socket
 import RPi.GPIO as GPIO
 import tweepy
 
@@ -91,6 +92,7 @@ GPIO.add_event_detect(eff_button, GPIO.RISING, bouncetime = 250)
 GPIO.output(leds, False)
 
 try:
+
 	camera.annotate_text_size = 130
 	camera.start_preview()
 	while True:
