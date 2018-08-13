@@ -9,6 +9,6 @@ ser = serial.Serial(
    bytesize=serial.EIGHTBITS,
    timeout=1)
 
-def sendToArduino(message):
-   ser.write('Write counter: %d \n'%(message))
+def send_to_arduino(message):
+   ser.write('Write counter: %s \n'%(message))
    print('Sending ' + message)
