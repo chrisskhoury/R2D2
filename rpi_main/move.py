@@ -1,6 +1,6 @@
-from Motor import motor
+from motor import Motor
 
-class move():
+class Move():
 	def __init__(self, leftMotor, rightMotor, headMotor):
 		self._leftMotor = leftMotor
 		self._rightMotor = rightMotor
@@ -22,11 +22,11 @@ class move():
 		self._leftMotor.clockwise(speed)
 		self._rightMotor.clockwise(turningSpeed)
 
-	def clockwise(self, speed):
+	def turnClockwise(self, speed):
 		self._leftMotor.counterClockwise(speed)
 		self._rightMotor.clockwise(speed)
 
-	def counter(self, speed):
+	def turnCounter(self, speed):
 		self._leftMotor.clockwise(speed)
 		self._rightMotor.counterClockwise(speed)
 

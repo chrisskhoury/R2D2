@@ -1,6 +1,6 @@
 from abc import ABC, abstractmethod
 
-class motor(ABC):
+class Motor(ABC):
 	def __init__(self):
 		pass
 
@@ -16,7 +16,7 @@ class motor(ABC):
 	def stop():
 		pass
 
-class L293d(motor):
+class L293d(Motor):
 	def __init__(self, pinE, pinA, pinB):
 		self._pinE = pinE
 		self._pinA = pinA
@@ -35,7 +35,7 @@ class L293d(motor):
 		GPIO.output(pinB, False)
 		self._pwmE.ChangeDutyCycle(speed)
 
-	def counterCLockwise(self, speed):
+	def counterClockwise(self, speed):
 		GPIO.output(pinE, True)
 		GPIO.output(pinA, False)
 		GPIO.output(pinB, True)
@@ -47,7 +47,7 @@ class L293d(motor):
 		GPIO.output(pinB, False)
 		self._pwmE.ChangeDutyCycle(0)
 
-class driver(motor):
+class Driver(Motor):
 	def __init__(self):
 		self._R_EN = R_EN
 		self._L_EN = L_EN
@@ -70,7 +70,7 @@ class driver(motor):
 		self._pwmR.ChangeDutyCycle(speed)
 		self._pwmL.ChangeDutyCycle(0)
 
-	def counterCLockwise(self, speed):
+	def counterClockwise(self, speed):
 		GPIO.output(self._R_EN, True)
 		GPIO.output(self._L_EN, True)	
 		self._pwmR.ChangeDutyCycle(0)
