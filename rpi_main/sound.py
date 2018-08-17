@@ -8,13 +8,12 @@ sounds = {
 		'NO' : "s3.mp3",
 }
 
-pygame.mixer.init()
-
 def playMusic(soundKey):
 	Thread(target = play, args = [soundKey,]).start()
 	print("playing now:", soundKey)
 
 def play(soundKey):
+	pygame.mixer.init()
 	if pygame.mixer.music.get_busy():
         	return
 	pygame.mixer.music.load(sounds[soundKey])
