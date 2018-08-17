@@ -3,20 +3,21 @@ from threading import Thread
 from time import sleep
 
 sounds = {
-		1 : "s1.mp3",
-		2 : "s2.mp3",
-		3 : "s3.mp3",
-		4 : "s4.mp3",
-		5 : "s5.mp3",
-		6 : "s6.mp3"
+		'Entrance' : "s1.mp3",
+		'YES' : "s2.mp3",
+		'NO' : "s3.mp3",
 }
 
-def Play(soundNum):
-	pygame.mixer.init()
-	pygame.mixer.music.load(sounds[soundNum])
-	pygame.mixer.music.play()
+pygame.mixer.init()
 
-while True:
-	Thread(target = playMusic).start()
-	print("playing now")
-	sleep(5)
+def playMusic(soundKey):
+	Thread(target = play, args = [soundKey,]).start()
+	print("playing now:", soundKey)
+
+def play(soundKey):
+	if pygame.mixer.music.get_busy():
+        	return
+	pygame.mixer.music.load(sounds[soundKey])
+	pygame.mixer.music.play()
+	while pygame.mixer.music.get_busy():
+        	continue
