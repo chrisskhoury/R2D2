@@ -13,7 +13,7 @@ GPIO.setmode(GPIO.BOARD)
 speed = 50
 turningSpeed = 37
 
-global status = "-----"
+#global status = "-----"
 
 #initializing the variables
 R_EN1 = 7
@@ -109,18 +109,17 @@ try:
 			print ('Minus Button pressed')
 			turnCounter(speed)
 			time.sleep(button_delay)
-
-
-	  	if (buttons & cwiid.BTN_A):
+		
+		if (buttons & cwiid.BTN_A):
 			print ('Button B pressed')
-	    		playMusic('YES')
+			playMusic('YES')
 			time.sleep(button_delay)
 
-	    	if (buttons & cwiid.BTN_B):
+		if (buttons & cwiid.BTN_B):
 			print ('Button B pressed')
 			playMusic('NO')
 			time.sleep(button_delay)
-
+		
 		if (not buttons):
 			stop()
 except:	
