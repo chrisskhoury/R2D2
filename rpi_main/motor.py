@@ -1,4 +1,5 @@
 from abc import ABC, abstractmethod
+import RPi.GPIO as GPIO
 
 class Motor(ABC):
 	def __init__(self):
@@ -30,21 +31,21 @@ class L293d(Motor):
 		self._pwmE.start(0)
 
 	def clockwise(self, speed):
-		GPIO.output(pinE, True)
-		GPIO.output(pinA, True)
-		GPIO.output(pinB, False)
+		GPIO.output(self._pinE , True)
+		GPIO.output(self._pinA , True)
+		GPIO.output(self._pinB , False)
 		self._pwmE.ChangeDutyCycle(speed)
 
 	def counterClockwise(self, speed):
-		GPIO.output(pinE, True)
-		GPIO.output(pinA, False)
-		GPIO.output(pinB, True)
+		GPIO.output(self._pinE , True)
+		GPIO.output(self._pinA , False)
+		GPIO.output(self._pinB , True)
 		self._pwmE.ChangeDutyCycle(speed)
 
-	def stop():
-		GPIO.output(pinE, False)
-		GPIO.output(pinA, False)
-		GPIO.output(pinB, False)
+	def stop(self):
+		GPIO.output(self._pinE , False)
+		GPIO.output(self._pinA , False)
+		GPIO.output(self._pinB , False)
 		self._pwmE.ChangeDutyCycle(0)
 
 class Driver(Motor):
