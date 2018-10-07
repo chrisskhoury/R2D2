@@ -8,6 +8,8 @@ from motor import Motor,L293d,Driver
 from sound import playMusic
 from move import Move
 
+from send_to_arduino import *
+
 GPIO.setmode(GPIO.BOARD)
 GPIO.setwarnings(False)
 
@@ -105,21 +107,25 @@ try:
                         print ('Up pressed')
                         move.forward(speed)
                         time.sleep(button_delay)
+                        send_to_arduino(HAPPY)
 
                 if (buttons & cwiid.BTN_DOWN):
                         print ('Down pressed')
                         move.backward(speed)
                         time.sleep(button_delay)
+                        send_to_arduino(DANCE)
 
                 if (buttons & cwiid.BTN_PLUS):
                         print ('Plus Button pressed')
                         move.turnClockwise(speed)
                         time.sleep(button_delay)
+                        send_to_arduino(DANGER)
 
                 if (buttons & cwiid.BTN_MINUS):
                         print ('Minus Button pressed')
                         move.turnCounter(speed)
                         time.sleep(button_delay)
+                        send_to_arduino(LOVE)
                 
                 if (buttons & cwiid.BTN_A):
                         print ('Button A pressed')
