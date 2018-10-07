@@ -1,4 +1,4 @@
-import pygame
+import pygame.mixer
 from threading import Thread
 from time import sleep
 
@@ -19,4 +19,4 @@ def play(soundKey):
 	pygame.mixer.music.load("/home/pi/R2D2V2-backup/sound_files/"+sounds[soundKey])
 	pygame.mixer.music.play()
 	while pygame.mixer.music.get_busy():
-        	continue
+               	continue

@@ -4,7 +4,7 @@ import serial
 
 ser = serial.Serial(
   
-   port='/dev/ttyUSB0',
+   port='/dev/ttyACM0',
    baudrate = 9600,
    parity=serial.PARITY_NONE,
    stopbits=serial.STOPBITS_ONE,
@@ -17,7 +17,7 @@ DANCE = '3'
 LOVE = '4'
 SPEAK = '5'
 
-def sendToArduino(message):
+def send_to_arduino(message):
    ser.write(message)
    print('Sending ' + message)
 
