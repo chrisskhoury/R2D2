@@ -10,13 +10,13 @@ sounds = {
 
 def playMusic(soundKey):
 	Thread(target = play, args = [soundKey,]).start()
-	print("playing now:", soundKey)
+	print "playing now:", sounds[soundKey]
 
 def play(soundKey):
 	pygame.mixer.init()
 	if pygame.mixer.music.get_busy():
         	return
-	pygame.mixer.music.load(sounds[soundKey])
+	pygame.mixer.music.load("/home/pi/R2D2V2-backup/sound_files/"+sounds[soundKey])
 	pygame.mixer.music.play()
 	while pygame.mixer.music.get_busy():
         	continue

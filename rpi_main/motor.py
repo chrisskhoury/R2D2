@@ -1,6 +1,7 @@
-from abc import ABC, abstractmethod
+from abc import ABCMeta, abstractmethod
+import RPi.GPIO as GPIO
 
-class Motor(ABC):
+class Motor():
 	def __init__(self):
 		pass
 
@@ -30,32 +31,28 @@ class L293d(Motor):
 		self._pwmE.start(0)
 
 	def clockwise(self, speed):
-		GPIO.output(pinE, True)
-		GPIO.output(pinA, True)
-		GPIO.output(pinB, False)
+		GPIO.output(self._pinE, True)
+		GPIO.output(self._pinA, True)
+		GPIO.output(self._pinB, False)
 		self._pwmE.ChangeDutyCycle(speed)
 
 	def counterClockwise(self, speed):
-		GPIO.output(pinE, True)
-		GPIO.output(pinA, False)
-		GPIO.output(pinB, True)
+		GPIO.output(self._pinE, True)
+		GPIO.output(self._pinA, False)
+		GPIO.output(self._pinB, True)
 		self._pwmE.ChangeDutyCycle(speed)
 
-	def stop():
-		GPIO.output(pinE, False)
-		GPIO.output(pinA, False)
-		GPIO.output(pinB, False)
+	def stop(self):
+		GPIO.output(self._pinE, False)
+		GPIO.output(self._pinA, False)
+		GPIO.output(self._pinB, False)
 		self._pwmE.ChangeDutyCycle(0)
 
 class Driver(Motor):
-	def __init__(self):
-		self._R_EN = R_EN
-		self._L_EN = L_EN
+	def __init__(self, RPWM, LPWM):
 		self._RPWM = RPWM
 		self._LPWM = LPWM
 
-		GPIO.setup(R_EN, GPIO.OUT)
-		GPIO.setup(L_EN, GPIO.OUT)
 		GPIO.setup(RPWM, GPIO.OUT)
 		GPIO.setup(LPWM, GPIO.OUT)
 
@@ -65,19 +62,13 @@ class Driver(Motor):
 		self._pwmL.start(0)
 
 	def clockwise(self, speed):
-		GPIO.output(self._R_EN, True)
-		GPIO.output(self._L_EN, True)
 		self._pwmR.ChangeDutyCycle(speed)
 		self._pwmL.ChangeDutyCycle(0)
 
-	def counterClockwise(self, speed):
-		GPIO.output(self._R_EN, True)
-		GPIO.output(self._L_EN, True)	
+	def counterClockwise(self, speed):	
 		self._pwmR.ChangeDutyCycle(0)
 		self._pwmL.ChangeDutyCycle(speed)
 
-	def stop():
-		GPIO.output(self._R_EN, False)
-		GPIO.output(self._L_EN, False)
+	def stop(self):
 		self._pwmR.ChangeDutyCycle(0)
 		self._pwmL.ChangeDutyCycle(0)

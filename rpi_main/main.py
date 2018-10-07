@@ -4,126 +4,141 @@ import time
 import cwiid
 import os
 
-from sound import Play
+from motor import Motor,L293d,Driver
+from sound import playMusic
 from move import Move
 
 GPIO.setmode(GPIO.BOARD)
+GPIO.setwarnings(False)
 
 #speed control
 speed = 50
 turningSpeed = 37
+headSpeed = 100
 
 #global status = "-----"
 
 #initializing the variables
-R_EN1 = 7
-L_EN1 = 11
+
 RPWM1 = 3
 LPWM1 = 5
 
-R_EN2 = 36
-L_EN2 = 32
 RPWM2 = 40
 LPWM2 = 38
 
-'''
-pinA = 1
-pinB = 2
-pinC = 3
-'''
+LPWM3 = 10
+RPWM3 = 8
+
+led = 37
+GPIO.setup(led,GPIO.OUT)
 
 # used for the sleep function between each reading from the wii remote
 button_delay = 0.1
 
-status = "Pair Wii"
+leftMotor = Driver(RPWM1, LPWM1)
+rightMotor = Driver(RPWM2, LPWM2)
+headMotor = Driver(RPWM3, LPWM3)
+
+move = Move(leftMotor, rightMotor, headMotor)
+
+#status = "Pair Wii"
 
 print ('Press 1 + 2 on your Wii Remote now ...')
 time.sleep(1)
+GPIO.output(led,True)
 
 # Connect to the Wii Remote. If it times out
 try:
+        GPIO.output(led,True)
 	wii = cwiid.Wiimote()
 
 except RuntimeError:
-	print ("Error opening wiimote connection")
-	status = "Error, retry"
-	os.system("sudo python main.py")
+	print ("Error opening wiimote connection .. Try again")
+	#status = "Error, retry"
+	time.sleep(1)
+	os.system("sudo python /home/pi/R2D2V2-backup/rpi_main/main.py")
 	quit()
-
+	
+GPIO.output(led,False)
 print ('Wii Remote connected...\n')
 print ('Press some buttons!\n')
 print ('Press PLUS and MINUS together to disconnect and quit.\n')
 
-status = "Success"
+#status = "Success"
 
 wii.rpt_mode = cwiid.RPT_BTN
 
 playMusic('Entrance')
 
-for i in range (1,5):
+for i in range (1,7):
 	wii.rumble = 1
-	time.sleep(0.05)
+	time.sleep(0.5)
 	wii.rumble = 0
 	time.sleep(0.05)
+
 try:
-	while True:
+        while True:
 
-		buttons = wii.state['buttons']
+                buttons = wii.state['buttons']
 
-		# If Plus and Minus buttons pressed
-		# together then rumble and quit.
+                # If Plus and Minus buttons pressed
+                # together then rumble and quit.
 
-		if (buttons - cwiid.BTN_PLUS - cwiid.BTN_MINUS == 0):
-			print ('\nClosing connection ...')
-			wii.rumble = 1
-			time.sleep(1)
-			wii.rumble = 0
-			exit(wii)
+                if (buttons - cwiid.BTN_PLUS - cwiid.BTN_MINUS == 0):
+                        print ('\nClosing connection ...')
+                        wii.rumble = 1
+                        time.sleep(1)
+                        wii.rumble = 0
+                        exit(wii)
 
-		if (buttons & cwiid.BTN_LEFT):
-			print ('Left pressed')
-			left(speed, turningSpeed)
-			time.sleep(button_delay)
+                if (buttons & cwiid.BTN_LEFT):
+                        print ('Left pressed')
+                        move.left(speed, turningSpeed)
+                        time.sleep(button_delay)
 
-		if(buttons & cwiid.BTN_RIGHT):
-			print ('Right pressed')
-			right(speed, turningSpeed)
-			time.sleep(button_delay)
+                if(buttons & cwiid.BTN_RIGHT):
+                        print ('Right pressed')
+                        move.right(speed, turningSpeed)
+                        time.sleep(button_delay)
 
-		if (buttons & cwiid.BTN_UP):
-			print ('Up pressed')
-			forward(speed)
-			time.sleep(button_delay)
+                if (buttons & cwiid.BTN_UP):
+                        print ('Up pressed')
+                        move.forward(speed)
+                        time.sleep(button_delay)
 
-		if (buttons & cwiid.BTN_DOWN):
-			print ('Down pressed')
-			backward(speed)
-			time.sleep(button_delay)
+                if (buttons & cwiid.BTN_DOWN):
+                        print ('Down pressed')
+                        move.backward(speed)
+                        time.sleep(button_delay)
 
-		if (buttons & cwiid.BTN_PLUS):
-			print ('Plus Button pressed')
-			turnClockwise(speed)
-			time.sleep(button_delay)
+                if (buttons & cwiid.BTN_PLUS):
+                        print ('Plus Button pressed')
+                        move.turnClockwise(speed)
+                        time.sleep(button_delay)
 
-		if (buttons & cwiid.BTN_MINUS):
-			print ('Minus Button pressed')
-			turnCounter(speed)
-			time.sleep(button_delay)
-		
-		if (buttons & cwiid.BTN_A):
-			print ('Button B pressed')
-			playMusic('YES')
-			time.sleep(button_delay)
+                if (buttons & cwiid.BTN_MINUS):
+                        print ('Minus Button pressed')
+                        move.turnCounter(speed)
+                        time.sleep(button_delay)
+                
+                if (buttons & cwiid.BTN_A):
+                        print ('Button A pressed')
+                        playMusic('YES')
+                        move.domeClockwise(headSpeed)
+                        time.sleep(button_delay)
 
-		if (buttons & cwiid.BTN_B):
-			print ('Button B pressed')
-			playMusic('NO')
-			time.sleep(button_delay)
-		
-		if (not buttons):
-			stop()
+                if (buttons & cwiid.BTN_B):
+                        print ('Button B pressed')
+                        playMusic('NO')
+                        move.domeCounter(headSpeed)
+                        time.sleep(button_delay)
+                
+                if (not buttons):
+                        move.stop()
 except:	
-	print ("Error opening wiimote connection")
-	status = "Error, retry"
-	os.system("sudo python main.py")
-	quit()
+	print ("Error with main .. Try again")
+	#status = "Error, retry"
+	move.stop()
+	GPIO.output(led,0)
+	time.sleep(1)
+	os.system("sudo python /home/pi/R2D2V2-backup/rpi_main/main.py")
