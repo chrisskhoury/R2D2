@@ -106,12 +106,12 @@ try:
 
                 elif (buttons & cwiid.BTN_LEFT):
                         print ('Left pressed')
-                        move.left(speed, turningSpeed)
+                        move.left(speed)
                         time.sleep(button_delay)
 
                 elif(buttons & cwiid.BTN_RIGHT):
                         print ('Right pressed')
-                        move.right(speed, turningSpeed)
+                        move.right(speed)
                         time.sleep(button_delay)
 
 

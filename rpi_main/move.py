@@ -1,8 +1,8 @@
+
 from motor import Motor
 
 class Move():
         step = 15
-	directionFunction = { 1 : moveForward, -1 : moveBackward, 2 : moveClockwise, -2:moveCounterClockwise, 3 : moveLeft, 4 : moveRight }
 
 	def __init__(self, leftMotor, rightMotor, headMotor):
 		self._leftMotor = leftMotor
@@ -10,7 +10,6 @@ class Move():
 		self._headMotor = headMotor
                 self.direction = 0
                 self.current_speed = 0
-		self.current_turningspeed = 0
 
         def increase_speed(self, max_speed):
                 self.current_speed += max_speed / Move.step
@@ -43,12 +42,12 @@ class Move():
 		self.moveRight()
 
 	def turnClockwise(self, speed):
-		direction = 2
+		self.direction = 2
 		self.increase_speed(speed)
 		self.moveClockwise()
 
 	def turnCounter(self, speed):
-		direction = -2
+		self.direction = -2
 		self.increase_speed(speed)
 		self.moveCounterClockwise()
 
@@ -58,7 +57,18 @@ class Move():
 			self._rightMotor.stop()
 		else:
 			self.decrease_speed(max_speed)
-			self.directionFunction[self.direction]()
+			if self.direction == 1:
+				self.moveForward()
+			elif self.direction == -1:
+				self.moveBackward()
+			elif self.direction == 2:
+				self.moveClockwise()
+			elif self.direction == -2:
+				self.moveCounterClockwise()
+			elif self.direction == 3:
+				self.moveLeft()
+			elif self.direction == 4:
+				self.moveRight()
 		self._headMotor.stop()
 
 	def domeClockwise(self, headSpeed):
