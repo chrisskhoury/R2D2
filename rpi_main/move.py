@@ -30,10 +30,10 @@ class Move():
 		self._leftMotor.clockwise(speed)
 		self._rightMotor.counterClockwise(speed)
 
-	def stop(self):
-		self._leftMotor.stop()
-		self._rightMotor.stop()
-		self._headMotor.stop()
+	def stop(self,speed):
+		self._leftMotor.stop(speed)
+		self._rightMotor.stop(speed)
+		self._headMotor.stop(speed)
 	
 	def domeClockwise(self, headSpeed):
 		self._headMotor.clockwise(headSpeed)
