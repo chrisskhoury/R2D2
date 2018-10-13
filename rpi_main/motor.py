@@ -69,6 +69,11 @@ class Driver(Motor):
 		self._pwmR.ChangeDutyCycle(0)
 		self._pwmL.ChangeDutyCycle(speed)
 
-	def stop(self):
-		self._pwmR.ChangeDutyCycle(0)
-		self._pwmL.ChangeDutyCycle(0)
+	def stop(self,speed):
+                ##                slowDown = 5
+                ##                for i in range (speed,0):
+                ##                        self._pwmR.ChangeDutyCycle(i)
+                ##                        self._pwmL.ChangeDutyCycle(i)
+                ##                        i = i - slowDown
+                self._pwmR.ChangeDutyCycle(0)
+                self._pwmL.ChangeDutyCycle(0)

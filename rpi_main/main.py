@@ -71,21 +71,20 @@ print ('Press PLUS and MINUS together to disconnect and quit.\n')
 
 wii.rpt_mode = cwiid.RPT_BTN
 
-playMusic('Entrance')
+#playMusic('Entrance')
 
 for i in range (1,7):
 	wii.rumble = 1
 	time.sleep(0.5)
 	wii.rumble = 0
 	time.sleep(0.05)
+	
 curret_btn = 0
+
 try:
         while True:
-
+                
                 buttons = wii.state['buttons']
-
-                # If Plus and Minus buttons pressed
-                # together then rumble and quit.
 
                 if (buttons - cwiid.BTN_PLUS - cwiid.BTN_MINUS == 0):
                         print ('\nClosing connection ...')
@@ -131,23 +130,32 @@ try:
                 
                 if (buttons & cwiid.BTN_A):
                         print ('Button A pressed')
-                        #playMusic('YES')
                         move.domeClockwise(headSpeed)
                         time.sleep(button_delay)
 
                 if (buttons & cwiid.BTN_B):
                         print ('Button B pressed')
-                        #playMusic('NO')
                         move.domeCounter(headSpeed)
                         time.sleep(button_delay)
-                
+                        
+                if (buttons & cwiid.BTN_1):
+                        playMusic('YES')      
+                        time.sleep(5*button_delay)
+                        while(buttons):
+                                buttons = wii.state['buttons']
+                        
+                if (buttons & cwiid.BTN_2):
+                        playMusic('NO')      
+                        time.sleep(5*button_delay)
+                        while(buttons):
+                                buttons = wii.state['buttons']
+                        
                 if (not buttons):
-                        move.stop()
+                        move.stop(speed)
                         
 except:	
 	print ("Error with main .. Try again")
-	#status = "Error, retry"
-	move.stop()
+	move.stop(speed)
 	GPIO.output(led,0)
 	time.sleep(1)
 	os.system("sudo python /home/pi/R2D2V2-backup/rpi_main/main.py")

@@ -1,10 +1,10 @@
 import time
 import serial
 
+num = 0
 
 ser = serial.Serial(
-  
-   port='/dev/ttyACM0',
+   port='/dev/ttyACM'+ str(num),
    baudrate = 9600,
    parity=serial.PARITY_NONE,
    stopbits=serial.STOPBITS_ONE,
