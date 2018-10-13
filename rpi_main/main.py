@@ -9,7 +9,7 @@ from motor import Motor,L293d,Driver
 from sound import playMusic
 from move import Move
 
-from send_to_arduino import *
+#from send_to_arduino import *
 
 GPIO.setmode(GPIO.BOARD)
 GPIO.setwarnings(False)
@@ -106,26 +106,26 @@ try:
                 if (buttons & cwiid.BTN_UP):
                         print ('Up pressed')
                         move.forward(speed)
-                        Thread(target=send_to_arduino, args=HAPPY).start()
+                        #Thread(target=send_to_arduino, args=HAPPY).start()
                         time.sleep(button_delay)
                         
 
                 if (buttons & cwiid.BTN_DOWN):
                         print ('Down pressed')
                         move.backward(speed)
-                        Thread(target=send_to_arduino, args=DANCE).start()
+                        #Thread(target=send_to_arduino, args=DANCE).start()
                         time.sleep(button_delay)
 
                 if (buttons & cwiid.BTN_PLUS):
                         print ('Plus Button pressed')
                         move.turnClockwise(speed)
-                        Thread(target=send_to_arduino, args=DANGER).start()
+                        #Thread(target=send_to_arduino, args=DANGER).start()
                         time.sleep(button_delay)
 
                 if (buttons & cwiid.BTN_MINUS):
                         print ('Minus Button pressed')
                         move.turnCounter(speed)
-                        Thread(target=send_to_arduino, args=LOVE).start()
+                        #Thread(target=send_to_arduino, args=LOVE).start()
                         time.sleep(button_delay)
                 
                 if (buttons & cwiid.BTN_A):
@@ -152,8 +152,9 @@ try:
                         
                 if (not buttons):
                         move.stop(speed)
+			time.sleep(button_delay)
                         
-except:	
+except KeyboardInterrupt:	
 	print ("Error with main .. Try again")
 	move.stop(speed)
 	GPIO.output(led,0)

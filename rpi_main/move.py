@@ -1,7 +1,7 @@
 from motor import Motor
 
 class Move():
-        step = 20
+        step = 15
 	def __init__(self, leftMotor, rightMotor, headMotor):
 		self._leftMotor = leftMotor
 		self._rightMotor = rightMotor
@@ -10,12 +10,12 @@ class Move():
                 self.current_speed = 0
 
         def increase_speed(self, max_speed):
-                self.current_speed += speed / Move.step
-                if (self.current_speed > speed):
-                    self.current_speed = speed
+                self.current_speed += max_speed / Move.step
+                if (self.current_speed > max_speed):
+                    self.current_speed = max_speed
 	
-        def decrease_speed(self):
-                self.current_speed -= speed / Move.step
+        def decrease_speed(self, max_speed):
+                self.current_speed -= max_speed / Move.step
                 if (self.current_speed < 10):
                     self.current_speed = 0
 	
@@ -47,8 +47,8 @@ class Move():
 		self._leftMotor.clockwise(speed)
 		self._rightMotor.counterClockwise(speed)
 
-	def stop(self):
-                self.decrease_speed()
+	def stop(self, max_speed):
+                self.decrease_speed(max_speed)
                 if self.direction == 1:
                     self._leftMotor.clockwise(self.current_speed)
                     self._rightMotor.clockwise(self.current_speed)
