@@ -78,12 +78,12 @@ for i in range (1,7):
 	time.sleep(0.5)
 	wii.rumble = 0
 	time.sleep(0.05)
-	
+
 curret_btn = 0
 
 try:
         while True:
-                
+
                 buttons = wii.state['buttons']
 
                 if (buttons - cwiid.BTN_PLUS - cwiid.BTN_MINUS == 0):
@@ -93,41 +93,41 @@ try:
                         wii.rumble = 0
                         exit(wii)
 
-                if (buttons & cwiid.BTN_LEFT):
-                        print ('Left pressed')
-                        move.left(speed, turningSpeed)
-                        time.sleep(button_delay)
-
-                if(buttons & cwiid.BTN_RIGHT):
-                        print ('Right pressed')
-                        move.right(speed, turningSpeed)
-                        time.sleep(button_delay)
-
                 if (buttons & cwiid.BTN_UP):
                         print ('Up pressed')
                         move.forward(speed)
                         #Thread(target=send_to_arduino, args=HAPPY).start()
                         time.sleep(button_delay)
-                        
 
-                if (buttons & cwiid.BTN_DOWN):
+                elif (buttons & cwiid.BTN_DOWN):
                         print ('Down pressed')
                         move.backward(speed)
                         #Thread(target=send_to_arduino, args=DANCE).start()
                         time.sleep(button_delay)
 
-                if (buttons & cwiid.BTN_PLUS):
+                elif (buttons & cwiid.BTN_LEFT):
+                        print ('Left pressed')
+                        move.left(speed, turningSpeed)
+                        time.sleep(button_delay)
+
+                elif(buttons & cwiid.BTN_RIGHT):
+                        print ('Right pressed')
+                        move.right(speed, turningSpeed)
+                        time.sleep(button_delay)
+
+
+                elif (buttons & cwiid.BTN_PLUS):
                         print ('Plus Button pressed')
                         move.turnClockwise(speed)
                         #Thread(target=send_to_arduino, args=DANGER).start()
                         time.sleep(button_delay)
 
-                if (buttons & cwiid.BTN_MINUS):
+                elif (buttons & cwiid.BTN_MINUS):
                         print ('Minus Button pressed')
                         move.turnCounter(speed)
                         #Thread(target=send_to_arduino, args=LOVE).start()
                         time.sleep(button_delay)
-                
+
                 if (buttons & cwiid.BTN_A):
                         print ('Button A pressed')
                         move.domeClockwise(headSpeed)
@@ -137,7 +137,7 @@ try:
                         print ('Button B pressed')
                         move.domeCounter(headSpeed)
                         time.sleep(button_delay)
-                        
+
                 if (buttons & cwiid.BTN_1):
                         playMusic('YES')      
                         time.sleep(5*button_delay)
