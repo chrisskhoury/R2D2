@@ -50,13 +50,17 @@ class Move():
 	def stop(self, max_speed):
                 self.decrease_speed(max_speed)
                 if self.direction == 1:
-			moveForward()
+			self.moveForward()
+			self.direction = 1
                 elif self.direction == -1:
-			moveBackward()
+			self.moveBackward()
+			self.direction = -1
                 elif self.direction == 2:
-			moveClockwise()
+			self.moveClockwise()
+			self.direction = 2
 		elif self.direction == -2:
-			moveCounterClockwise()
+			self.moveCounterClockwise()
+			self.direction = -2
 		else:
 		    self._leftMotor.stop()
 		    self._rightMotor.stop()
