@@ -2,12 +2,15 @@ from motor import Motor
 
 class Move():
         step = 15
+	directionFunction = { 1 : moveForward, -1 : moveBackward, 2 : moveClockwise, -2:moveCounterClockwise, 3 : moveLeft, 4 : moveRight }
+
 	def __init__(self, leftMotor, rightMotor, headMotor):
 		self._leftMotor = leftMotor
 		self._rightMotor = rightMotor
 		self._headMotor = headMotor
                 self.direction = 0
                 self.current_speed = 0
+		self.current_turningspeed = 0
 
         def increase_speed(self, max_speed):
                 self.current_speed += max_speed / Move.step
@@ -29,13 +32,15 @@ class Move():
                 self.increase_speed(speed)
 		self.moveBackward()
 
-	def left(self, speed, turningSpeed):
-                self._leftMotor.clockwise(turningSpeed)
-                self._rightMotor.clockwise(speed)
+	def left(self, speed):
+		self.direction = 3
+		self.increase_speed(speed)
+		self.moveLeft()
 
-	def right(self, speed, turningSpeed):
-		self._leftMotor.clockwise(speed)
-		self._rightMotor.clockwise(turningSpeed)
+	def right(self, speed):
+		self.direction = 4
+		self.increase_speed(speed)
+		self.moveRight()
 
 	def turnClockwise(self, speed):
 		direction = 2
@@ -48,22 +53,12 @@ class Move():
 		self.moveCounterClockwise()
 
 	def stop(self, max_speed):
-                self.decrease_speed(max_speed)
-                if self.direction == 1:
-			self.moveForward()
-			self.direction = 1
-                elif self.direction == -1:
-			self.moveBackward()
-			self.direction = -1
-                elif self.direction == 2:
-			self.moveClockwise()
-			self.direction = 2
-		elif self.direction == -2:
-			self.moveCounterClockwise()
-			self.direction = -2
+		if self.current_speed == 0:
+			self._leftMotor.stop()
+			self._rightMotor.stop()
 		else:
-		    self._leftMotor.stop()
-		    self._rightMotor.stop()
+			self.decrease_speed(max_speed)
+			self.directionFunction[self.direction]()
 		self._headMotor.stop()
 
 	def domeClockwise(self, headSpeed):
@@ -87,4 +82,13 @@ class Move():
 	def moveCounterClockwise(self):
 		self._leftMotor.clockwise(self.current_speed)
 		self._rightMotor.counterClockwise(self.current_speed)
+
+	def moveLeft(self):
+                self._leftMotor.clockwise(0.75*self.current_speed)
+                self._rightMotor.clockwise(self.current_speed)
+
+	def moveRight(self):
+		self._leftMotor.clockwise(self.current_speed)
+		self._rightMotor.clockwise(0.75*self.current_speed)
+
 

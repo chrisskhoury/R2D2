@@ -16,7 +16,6 @@ GPIO.setwarnings(False)
 
 #speed control
 speed = 50
-turningSpeed = 37
 headSpeed = 100
 
 #global status = "-----"
@@ -139,22 +138,25 @@ try:
                         time.sleep(button_delay)
 
                 if (buttons & cwiid.BTN_1):
-                        playMusic('YES')      
+                        playMusic('YES')
                         time.sleep(5*button_delay)
                         while(buttons):
                                 buttons = wii.state['buttons']
-                        
+			continue
+
+
                 if (buttons & cwiid.BTN_2):
-                        playMusic('NO')      
+                        playMusic('NO')
                         time.sleep(5*button_delay)
                         while(buttons):
                                 buttons = wii.state['buttons']
-                        
+			continue
+
                 if (not buttons):
                         move.stop(speed)
 			time.sleep(button_delay)
-                        
-except KeyboardInterrupt:	
+
+except KeyboardInterrupt:
 	print ("Error with main .. Try again")
 	move.stop(speed)
 	GPIO.output(led,0)
