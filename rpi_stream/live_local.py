@@ -1,3 +1,5 @@
+## to connect on vlc: tcp/h264://192.168.xxx.xxx:8800
+
 import picamera
 import time
 import socket
@@ -14,7 +16,7 @@ def liveStream():
     	server_socket = socket.socket()
 
     #the stream is at the pi's IP address port 8000
-	server_socket.bind(('0.0.0.0', 8000))
+	server_socket.bind(('0.0.0.0', 8800))
     except:
 	print("Port is already in use... quitting.")
 	exit()
