@@ -72,13 +72,14 @@ wii.rpt_mode = cwiid.RPT_BTN
 
 #playMusic('Entrance')
 
-for i in range (1,7):
+for i in range (1,4):
 	wii.rumble = 1
 	time.sleep(0.5)
 	wii.rumble = 0
 	time.sleep(0.05)
 
 curret_btn = 0
+current_emotion = 0
 
 try:
         while True:
@@ -95,13 +96,11 @@ try:
                 if (buttons & cwiid.BTN_UP):
                         print ('Up pressed')
                         move.forward(speed)
-                        #Thread(target=send_to_arduino, args=HAPPY).start()
                         time.sleep(button_delay)
 
                 elif (buttons & cwiid.BTN_DOWN):
                         print ('Down pressed')
                         move.backward(speed)
-                        #Thread(target=send_to_arduino, args=DANCE).start()
                         time.sleep(button_delay)
 
                 elif (buttons & cwiid.BTN_LEFT):
@@ -118,13 +117,11 @@ try:
                 elif (buttons & cwiid.BTN_PLUS):
                         print ('Plus Button pressed')
                         move.turnClockwise(speed)
-                        #Thread(target=send_to_arduino, args=DANGER).start()
                         time.sleep(button_delay)
 
                 elif (buttons & cwiid.BTN_MINUS):
                         print ('Minus Button pressed')
                         move.turnCounter(speed)
-                        #Thread(target=send_to_arduino, args=LOVE).start()
                         time.sleep(button_delay)
 
                 if (buttons & cwiid.BTN_A):
@@ -139,6 +136,9 @@ try:
 
                 if (buttons & cwiid.BTN_1):
                         playMusic('YES')
+                        if current_emotion != HAPPY:
+                            current_emotion = HAPPY
+                            send_to_arduino(HAPPY)
                         time.sleep(5*button_delay)
                         while(buttons):
                                 buttons = wii.state['buttons']
@@ -147,6 +147,9 @@ try:
 
                 if (buttons & cwiid.BTN_2):
                         playMusic('NO')
+                        if current_emotion != SAD:
+                            current_emotion = SAD
+                            send_to_arduino(SAD)
                         time.sleep(5*button_delay)
                         while(buttons):
                                 buttons = wii.state['buttons']
