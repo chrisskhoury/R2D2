@@ -9,7 +9,7 @@ from motor import Motor,L293d,Driver
 from sound import playMusic
 from move import Move
 
-#from send_to_arduino import *
+from send_to_arduino import *
 
 GPIO.setmode(GPIO.BOARD)
 GPIO.setwarnings(False)
@@ -147,9 +147,9 @@ try:
 
                 if (buttons & cwiid.BTN_2):
                         playMusic('NO')
-                        if current_emotion != SAD:
-                            current_emotion = SAD
-                            send_to_arduino(SAD)
+                        if current_emotion != DANGER:
+                            current_emotion = DANGER
+                            send_to_arduino(DANGER)
                         time.sleep(5*button_delay)
                         while(buttons):
                                 buttons = wii.state['buttons']
