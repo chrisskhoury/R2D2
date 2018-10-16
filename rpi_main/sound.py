@@ -13,4 +13,4 @@ def playMusic(soundKey):
 	print "playing now:", sounds[soundKey]
 
 def play(soundKey):
-	os.system("omxplayer -o both /home/pi/R2D2V2-backup/sound_files/"+sounds[soundKey])
+	os.system("omxplayer -o both /home/pi/r2d2v2/sound_files/"+sounds[soundKey])

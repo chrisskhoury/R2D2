@@ -4,12 +4,13 @@ import time
 import cwiid
 import os
 
-from threading import Thread
 from motor import Motor,L293d,Driver
 from sound import playMusic
 from move import Move
 
-from send_to_arduino import *
+from serial_arduino import *
+
+print "Blabla"
 
 GPIO.setmode(GPIO.BOARD)
 GPIO.setwarnings(False)
@@ -58,7 +59,7 @@ except RuntimeError:
 	print ("Error opening wiimote connection .. Try again")
 	#status = "Error, retry"
 	time.sleep(1)
-	os.system("sudo python /home/pi/R2D2V2-backup/rpi_main/main.py")
+	os.system("sudo python /home/pi/r2d2v2/rpi_main/main.py")
 	quit()
 	
 GPIO.output(led,False)
@@ -136,9 +137,8 @@ try:
 
                 if (buttons & cwiid.BTN_1):
                         playMusic('YES')
-                        if current_emotion != HAPPY:
-                            current_emotion = HAPPY
-                            send_to_arduino(HAPPY)
+                        send_to_arduino(HAPPY)
+                        print "HELLO"
                         time.sleep(5*button_delay)
                         while(buttons):
                                 buttons = wii.state['buttons']
@@ -147,9 +147,7 @@ try:
 
                 if (buttons & cwiid.BTN_2):
                         playMusic('NO')
-                        if current_emotion != DANGER:
-                            current_emotion = DANGER
-                            send_to_arduino(DANGER)
+                        send_to_arduino(DANGER)
                         time.sleep(5*button_delay)
                         while(buttons):
                                 buttons = wii.state['buttons']
@@ -164,4 +162,4 @@ except KeyboardInterrupt:
 	move.stop(speed)
 	GPIO.output(led,0)
 	time.sleep(1)
-	os.system("sudo python /home/pi/R2D2V2-backup/rpi_main/main.py")
+	os.system("sudo python /home/pi/r2d2v2/rpi_main/main.py")

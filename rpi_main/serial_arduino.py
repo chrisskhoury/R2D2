@@ -4,6 +4,7 @@ from threading import Thread
 
 num = 0
 available = False
+current_state = '0'
 
 HAPPY = '1'
 DANGER = '2'
@@ -30,10 +31,16 @@ while True:
         else:
             break
 
+def serial_write(message):
+    print "Sending " + str(message)
+    ser.write(message)
+
 def send_to_arduino(message):
+    global current_state
     try:
-        if available:
-            print("Sending", message)
-            Thread(target=ser.write, args=[message,]).start()
+        if message != current_state and available:
+            current_state = message
+            Thread(target=serial_write, args=[message,]).start()
+
     except:
         pass
